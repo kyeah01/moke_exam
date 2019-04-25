@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(request):
@@ -31,6 +33,7 @@ def login(request):
     }
     return render(request, 'accounts/auth_form.html', context)
     
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect('posts:list')

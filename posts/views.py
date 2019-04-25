@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
 
@@ -18,6 +19,7 @@ def detail(request, post_pk):
     }
     return render(request, 'posts/detail.html', context)
     
+@login_required
 def create(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -33,6 +35,7 @@ def create(request):
     }
     return render(request, 'posts/postform.html', context)
     
+@login_required
 def update(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.user != post.user:
@@ -48,6 +51,7 @@ def update(request, post_pk):
         }
     return render(request, 'posts/postform.html', context)
 
+@login_required
 @require_POST
 def delete(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
@@ -55,7 +59,8 @@ def delete(request, post_pk):
         return redirect('posts:detail', post_pk)
     post.delete()
     return redirect('posts:list')
-    
+
+@login_required
 def like(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.user in post.like_users.all():
