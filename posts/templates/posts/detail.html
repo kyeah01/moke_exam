@@ -5,10 +5,11 @@
 <p>제목 : {{ post.title }}</p>
 <p>내용 : {{ post.content }}</p>
 <a href="{% url 'posts:list' %}">뒤로</a>
+{% if request.user == post.user %}
 <form method="POST" action="{% url 'posts:delete' post.pk %}" style="display:inline;">
     {% csrf_token %}
     <input type="submit" value="삭제"/>
 </form>
 <a href="{% url 'posts:update' post.pk %}">수정</a>
-
+{% endif %}
 {% endblock %}

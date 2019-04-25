@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_POST
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
 def list(request):
-    posts = Post.objects.all()
+    # posts = Post.objects.all()
+    posts = get_list_or_404(Post)
     context = {
         'posts' : posts,
     }
@@ -21,8 +22,9 @@ def create(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            post = form.save()
-            # return redirect('posts:list')
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
             return redirect('posts:detail', post.pk)
     else:
         form = PostForm()
@@ -33,11 +35,13 @@ def create(request):
     
 def update(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
+    if request.user != post.user:
+        return redirect('posts:detail', post_pk)
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save()
-            return redirect('posts:detail', post.pk)
+            return redirect('posts:detail', post_pk)
     else:
         context = {
             'form' : PostForm(instance=post)
@@ -47,5 +51,15 @@ def update(request, post_pk):
 @require_POST
 def delete(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
+    if request.user != post.user:
+        return redirect('posts:detail', post_pk)
     post.delete()
+    return redirect('posts:list')
+    
+def like(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.user in post.like_users.all():
+        post.like_users.remove(request.user)
+    else:
+        post.like_users.add(request.user)
     return redirect('posts:list')
