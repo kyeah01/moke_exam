@@ -2,10 +2,13 @@
 {% block content %}
 
 <h1>Detail</h1>
-<p>{{ post.title }}</p>
-<p>{{ post.content }}</p>
+<p>제목 : {{ post.title }}</p>
+<p>내용 : {{ post.content }}</p>
 <a href="{% url 'posts:list' %}">뒤로</a>
-<a href="{% url 'posts:list' %}">삭제</a>
-<a href="{% url 'posts:list' %}">수정</a>
+<form method="POST" action="{% url 'posts:delete' post.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <input type="submit" value="삭제"/>
+</form>
+<a href="{% url 'posts:update' post.pk %}">수정</a>
 
 {% endblock %}
