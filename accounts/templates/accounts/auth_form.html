@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.resolver_match.url_name == 'signup' %}
+    <h1>SignUp</h1>
+{% else %}
+    <h1>Login</h1>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit"/>
+</form>
+
+{% endblock %}

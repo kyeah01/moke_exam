@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-
+{% if user.is_authenticated %}
+<p>{{ user.username }}님, 반가워요!</p>
+<a href="{% url 'accounts:logout' %}">로그아웃</a>
+{% else %}
+<a href="{% url 'accounts:signup' %}">회원가입</a>
+<a href="{% url 'accounts:login' %}">로그인</a>
+{% endif %}
 <h1>List</h1>
 {% for post in posts %}
 
