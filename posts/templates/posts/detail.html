@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Detail</h1>
+<p>{{ post.title }}</p>
+<p>{{ post.content }}</p>
+<a href="{% url 'posts:list' %}">뒤로</a>
+<a href="{% url 'posts:list' %}">삭제</a>
+<a href="{% url 'posts:list' %}">수정</a>
+
+{% endblock %}
