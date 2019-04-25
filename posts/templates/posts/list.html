@@ -9,9 +9,7 @@
 {% endif %}
 <h1>List</h1>
 {% for post in posts %}
-
     <p><a href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a> | {{ post.content }}</p>
-
 {% endfor %}
 
 {% endblock %}
