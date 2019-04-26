@@ -3,7 +3,7 @@
 
 {% if request.resolver_match.url_name == 'signup' %}
     <h1>SignUp</h1>
-        {{ users }}명의 회원이 함께하고있습니다.
+        <p>{{ users }}명의 회원이 함께하고있습니다.</p>
 {% else %}
     <h1>Login</h1>
 {% endif %}
